@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from scrapy.crawler import CrawlerProcess
 
+
 # from availability_checker import AvailabilityChecker
 
 
@@ -30,13 +31,11 @@ class SpiderIW(scrapy.Spider):
     """
     name = 'spider_iw'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.start_urls = [
-            f'https://www.immowelt.de/liste/konstanz-koenigsbau/wohnungen/mieten?ami={SIZE_MIN}&d=true&lids=462735'
-            f'&lids=462751&lids=462733&lids=462766&lids=462749&lids=462734&lids=462758&pma={PRICE_MAX}&pmi='
-            f'{PRICE_MIN}&sd=DESC&sf=TIMESTAMP&sp=1',
-        ]
+    start_urls = [
+        f'https://www.immowelt.de/liste/konstanz-koenigsbau/wohnungen/mieten?ami={SIZE_MIN}&d=true&lids=462735'
+        f'&lids=462751&lids=462733&lids=462766&lids=462749&lids=462734&lids=462758&pma={PRICE_MAX}&pmi='
+        f'{PRICE_MIN}&sd=DESC&sf=TIMESTAMP&sp=1',
+    ]
 
     def parse(self, response, **kwargs):
         """
@@ -67,9 +66,7 @@ class SpiderWGG(scrapy.Spider):
     """
     name = 'spider_wgg'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.start_urls = [
+    start_urls = [
             f'https://www.wg-gesucht.de/1-zimmer-wohnungen-und-wohnungen-in-Konstanz.74.1+2.1.0.html?offer_filter=1'
             f'&city_id=74&sort_order=0&noDeact=1&categories[]=1&categories[]=2&rent_types[]=0&sMin={SIZE_MIN}&rMax='
             f'{PRICE_MAX}&exc=2',
@@ -102,9 +99,7 @@ class SpiderKA(scrapy.Spider):
     """
     name = 'spider_ka'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.start_urls = [
+    start_urls = [
             f'https://www.kleinanzeigen.de/s-wohnung-mieten/konstanz/anzeige:angebote/preis:{PRICE_MIN}:{PRICE_MAX}/'
             f'c203l9386+wohnung_mieten.qm_d:{SIZE_MIN}%2C+wohnung_mieten.zimmer_d:{ROOMS}%2C',
         ]

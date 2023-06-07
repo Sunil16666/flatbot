@@ -1,9 +1,11 @@
+import os
+
 import requests
 import scrapy
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from scrapy.crawler import CrawlerProcess
-
+from dotenv import load_dotenv
 
 # from availability_checker import AvailabilityChecker
 
@@ -19,10 +21,10 @@ class EstateItem(scrapy.Item):
     url = scrapy.Field()
 
 
-PRICE_MIN = 500
-PRICE_MAX = 1700
-SIZE_MIN = 85
-ROOMS = 3
+PRICE_MIN = 300
+PRICE_MAX = 800
+SIZE_MIN = 20
+ROOMS = 1
 
 
 class SpiderIW(scrapy.Spider):
@@ -67,7 +69,7 @@ class SpiderWGG(scrapy.Spider):
     name = 'spider_wgg'
 
     start_urls = [
-            f'https://www.wg-gesucht.de/1-zimmer-wohnungen-und-wohnungen-in-Konstanz.74.1+2.1.0.html?offer_filter=1'
+            f'https://www.wg-gesucht.de/1-zimmer-wohnungen-und-wohnungen-in-Muenchen.90.1+2.1.0.html?offer_filter=1'
             f'&city_id=74&sort_order=0&noDeact=1&categories[]=1&categories[]=2&rent_types[]=0&sMin={SIZE_MIN}&rMax='
             f'{PRICE_MAX}&exc=2',
         ]
@@ -100,7 +102,7 @@ class SpiderKA(scrapy.Spider):
     name = 'spider_ka'
 
     start_urls = [
-            f'https://www.kleinanzeigen.de/s-wohnung-mieten/konstanz/anzeige:angebote/preis:{PRICE_MIN}:{PRICE_MAX}/'
+            f'https://www.kleinanzeigen.de/s-wohnung-mieten/muenchen/anzeige:angebote/preis:{PRICE_MIN}:{PRICE_MAX}/'
             f'c203l9386+wohnung_mieten.qm_d:{SIZE_MIN}%2C+wohnung_mieten.zimmer_d:{ROOMS}%2C',
         ]
 
@@ -198,10 +200,11 @@ class EstatePipeline:
 
 
 if __name__ == "__main__":
+    load_dotenv()
     # MongoDB's connection details
-    mongo_uri = 'mongodb+srv://sunilh05:9rOjkTfQFdIDLgiH@cluster0.ddk23zz.mongodb.net/?retryWrites=true&w=majority'
-    mongo_db = 'EstateItems'
-    ntfy_topic = 'VgmQuBZfQhxFeZvr'
+    mongo_uri = os.getenv('MONGO_URI')
+    mongo_db = os.getenv('MONGO_DB')
+    ntfy_topic = os.getenv('NTFY_TOPIC')
 
     # Start availability checker
     # availability_checker = AvailabilityChecker(mongo_uri, mongo_db)
@@ -218,7 +221,7 @@ if __name__ == "__main__":
         'MONGO_URI': mongo_uri,
         'MONGO_DATABASE': mongo_db,
         'NTFY_TOPIC': ntfy_topic,
-        'CONCURRENT_REQUESTS': 1,
+        'CONCURRENT_REQUESTS': 2,
         'DOWNLOAD_DELAY': 3,
     })
 

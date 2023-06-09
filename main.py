@@ -81,12 +81,14 @@ class SpiderWGG(scrapy.Spider):
         offer_elements = response.css('div.wgg_card.offer_list_item')
 
         for offer in offer_elements:
+            title = offer.css('h3.truncate_title.noprint a::text').get()
             price = offer.css('div.row.noprint.middle div.col-xs-3 b::text').get()
             area = offer.css('div.row.noprint.middle div.col-xs-3.text-right b::text').get()
             rooms = offer.css('div.col-xs-11 span::text').re_first(r'(\d+-\w+-\w+)')
             offer_url = "https://www.wg-gesucht.de" + offer.css('a.detailansicht::attr(href)').get()
 
             item = EstateItem(
+                Title=title,
                 Price=price,
                 Area=area,
                 Rooms=rooms,

@@ -1,6 +1,5 @@
-import tkinter as tk
 import customtkinter as ctk
-from components.widget import MyWidget
+from components.widgets import MyWidget
 
 
 ctk.set_appearance_mode("dark")
